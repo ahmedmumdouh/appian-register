@@ -10,7 +10,7 @@ function App() {
       <div className="App">
         <Switch>
           {/* <Header/> */}
-          <Route path="/register" component={RegistrationSection} exact />
+          <Route path="/" component={RegistrationSection} exact />
           {/* <Route path="/" component={HomeScreen} exact />
           <Route path="/search" component={SearchScreen} exact />
           <Route path="/category" component={Category} exact />
