@@ -34,7 +34,7 @@ function RegistrationSection() {
           .then(res => {
             console.log(res);
             if (res.status === 200) {                            
-              setRegMsg({...regMsg, msg: res.data.success,style:"border-success text-success",bgColor:{backgroundColor: "aquamarine"}});   
+              setRegMsg({...regMsg, msg: res.data.success,style:"border-top border-success text-success",bgColor:{backgroundColor: "aquamarine"}});   
               // console.log("success", res);
               // if(regMsg.style === "text-success"){
                 setNewUser({...newUser,
@@ -52,8 +52,8 @@ function RegistrationSection() {
             }            
           })
           .catch((err) => {            
-            console.log(err.response.data.error);   
-            setRegMsg({...regMsg, msg: err.response.data.error,style:"border-danger text-danger",bgColor:{backgroundColor: "lightpink"} }); 
+            // console.log(err.response.data.error);   
+            setRegMsg({...regMsg, msg: err.response.data.error,style:"border-top border-danger text-danger",bgColor:{backgroundColor: "lightpink"} }); 
           });
     }
   }
@@ -179,7 +179,7 @@ function RegistrationSection() {
                 <Button variant="success" type="submit" className="btn btn-block" size="lg">
                 Register
                 </Button>
-                <div className={`rounded border-top  p-2 mt-2 mb-1 ${regMsg.style}` } style={regMsg.bgColor} >
+                <div className={`rounded p-2 mt-2 mb-1 ${regMsg.style}` } style={regMsg.bgColor} >
                     {regMsg.msg}
                 </div>
                 
