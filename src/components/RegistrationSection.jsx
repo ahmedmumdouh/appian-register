@@ -8,7 +8,7 @@ import { Link, useHistory } from "react-router-dom";
 import URLs from '../services/apiUrls';
 
 function RegistrationSection() {
-  const [regMsg, setRegMsg] = useState({msg:'',style:'text-danger'});
+  const [regMsg, setRegMsg] = useState({msg:'',style:'',bgColor:{}});
   const [errors, setErrors] = useState({});
   const [newUser, setNewUser] = useState(
     {
@@ -32,9 +32,10 @@ function RegistrationSection() {
     if (Object.keys(errors).length === 0) {
       axios.post(`${URLs.baseURL}${URLs.registerURL}`, newUser, conf)
           .then(res => {
+            console.log(res);
             if (res.status === 200) {                            
-              setRegMsg({...regMsg, msg:`${newUser.username} is created Successfully, Intial password is sent to Your Email.`,style:"text-success"});   
-              console.log("success", res);
+              setRegMsg({...regMsg, msg: res.data.success,style:"border-success text-success",bgColor:{backgroundColor: "aquamarine"}});   
+              // console.log("success", res);
               // if(regMsg.style === "text-success"){
                 setNewUser({...newUser,
                   firstName: '',
@@ -44,17 +45,15 @@ function RegistrationSection() {
                 });
               // }
             //   history.push("/");
-            }else if(res.status === 208){
-              setErrors({email : `this Email: ${newUser.email} is already exists`});
-            }  
+            }
             else if(res.status === 500){
-                console.log(res); 
-                setRegMsg({...regMsg, msg:"Server-side Error",style:"text-danger"}); 
+                // console.log(res); 
+              setRegMsg({...regMsg, msg: res.data.error,style:"",bgColor:""}); 
             }            
           })
-          .catch(err => {            
-            console.log(err);   
-            setRegMsg({...regMsg, msg:"Server-side Error",style:"text-danger"});         
+          .catch((err) => {            
+            console.log(err.response.data.error);   
+            setRegMsg({...regMsg, msg: err.response.data.error,style:"border-danger text-danger",bgColor:{backgroundColor: "lightpink"} }); 
           });
     }
   }
@@ -62,7 +61,7 @@ function RegistrationSection() {
   const  handleChange = (e) => {
     // console.log(e.target.value);
    
-    setRegMsg({ ...regMsg, msg:"",style:"text-danger"}); 
+    setRegMsg({ ...regMsg, msg:"",style:"",bgColor:{} }); 
     
     setNewUser({...newUser, [e.target.name]: e.target.value})
   };
@@ -95,13 +94,19 @@ function RegistrationSection() {
         <Row>
           <Col></Col>
 
-          <Col>
-          <Col className="border p-4 mt-5">
           
-                <a href='https://naghamdemo.appiancloud.com/suite/' className="btn btn-danger btn-block">
+            <Col className="rounded rounded-5 border border-5 border-danger p-4 mt-5 bg-light bg-gradient">
+          
+                <a href='https://naghamdemo.appiancloud.com/suite/' className="btn btn-md btn-secondary btn-block">
                   Login
-                </a>
-                <br /> <hr /> 
+                </a>                                 
+                        <hr className="mt-2 mb-4"
+                            style={{
+                                height: 1                               
+                            }}
+                        />               
+                               
+                                 
                 <Form method="post" onSubmit={handleSubmit}  >
 
                 <Form.Group controlId="formGridUsername">
@@ -114,7 +119,7 @@ function RegistrationSection() {
                             onChange={handleChange} 
                             required
                             />
-                <Form.Text className="text-danger">
+                <Form.Text className="text-left text-danger">
                     {errors.username}
                 </Form.Text>
                 </Form.Group>
@@ -130,7 +135,7 @@ function RegistrationSection() {
                             onChange={handleChange} 
                             required
                             />
-                <Form.Text className="text-danger">
+                <Form.Text className="text-left text-danger">
                     {errors.email}
                 </Form.Text>
                 </Form.Group>
@@ -147,7 +152,7 @@ function RegistrationSection() {
                                 minLength="2" 
                                 required
                                 />
-                        <Form.Text className="text-danger">
+                        <Form.Text className="text-left text-danger">
                         {errors.firstName}
                         </Form.Text>
                     </Form.Group>
@@ -163,7 +168,7 @@ function RegistrationSection() {
                                 minLength="2"  
                                 required
                                 />
-                        <Form.Text className="text-danger">
+                        <Form.Text className="text-left text-danger">
                         {errors.lastName}
                         </Form.Text>
                     </Form.Group>
@@ -171,18 +176,18 @@ function RegistrationSection() {
             
                        
                 <hr />
-                <Button variant="success" type="submit" className="btn btn-block">
+                <Button variant="success" type="submit" className="btn btn-block" size="lg">
                 Register
                 </Button>
-                <span className={regMsg.style}>
+                <div className={`rounded border-top  p-2 mt-2 mb-1 ${regMsg.style}` } style={regMsg.bgColor} >
                     {regMsg.msg}
-                </span>
-                <br />
+                </div>
+                
                 
             </Form>
             
             </Col>
-          </Col>
+          
           <Col></Col>
         </Row>
       </Container>

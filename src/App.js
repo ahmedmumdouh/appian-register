@@ -6,8 +6,8 @@ import RegistrationSection from "./components/RegistrationSection";
 
 function App() {
   return (
-    <Router>
-      <div className="App">
+    <Router >
+      <div className="App" >
         <Switch>
           {/* <Header/> */}
           <Route path="/" component={RegistrationSection} exact />
